@@ -1,0 +1,211 @@
+{% extends "member_base.html" %}
+
+
+{% load url from future %}
+{% load compress %}
+{% load staticfiles %}
+{% load i18n %}
+{% load pagination_tags %}
+{% load doodoll_kit_tags %}
+
+
+{% block title %} {% trans '会员列表' %} - {{ SITE_TITLE }} {% endblock %}
+
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'css/index.scss' %}" type="text/x-scss"/>
+        <link rel="stylesheet" href="{% static 'css/pagination.scss' %}" type="text/x-scss"/>
+    {% endcompress %}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/vendor/handlebars-1.0.0.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/vendor/jquery.bpopup.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/vendor/jquery.form-3.51.0.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/get_url.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/export_table.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="search-form">
+            <form class="form-horizontal" action="{{ request.get_full_path }}" method="get">
+                {% csrf_token %}
+                <div class="inline-group">
+                    <div class="control-group">
+                        <label for="id_sex" class="control-label ">{% trans "性别" %}</label>
+                        <div class="controls">
+                            {{ form.sex }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="id_identity" class="control-label ">{% trans "身份" %}</label>
+                        <div class="controls">
+                            {{ form.identity }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="id_examine" class="control-label ">{% trans "审核状态" %}</label>
+                        <div class="controls">
+                            {{ form.examine }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="id_attention" class="control-label ">{% trans "关注状态" %}</label>
+                        <div class="controls">
+                            {{ form.attention }}
+                        </div>
+                    </div>
+                    <div class="control-group search-input">
+                        <label for="id_city" class="control-label ">{% trans "城市" %}</label>
+                        <div class="controls">
+                            {{ form.city }}
+                        </div>
+                        <em class="write"></em>
+                    </div>
+                    <div class="control-group search-input">
+                        <label for="id_name" class="control-label ">{% trans "姓名" %}</label>
+                        <div class="controls">
+                            {{ form.name }}
+                        </div>
+                        <em class="write"></em>
+                    </div>
+                    <div class="control-group search-input">
+                        <label for="id_trade" class="control-label ">{% trans "行业" %}</label>
+                        <div class="controls">
+                            {{ form.trade }}
+                        </div>
+                        <em class="write"></em>
+                    </div>
+                    <div class="search-form-actions">
+                        <input type="submit" class="btn btn-primary" value="{% trans '搜索' %}"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="search-table">
+            <h2 class="ul-title">
+                <span class="left-title">{% trans '会员列表' %}</span>
+                <div class="right-title">
+                    <span>
+                        {% trans '排序：' %}
+                        <a data-key="sort" class="ascending order-by" href="{% url 'member_list' %}">
+                            <em>{% trans '时间' %}</em>
+                            <i class="sort"></i>
+                        </a>
+                    </span>
+                    <span class="export-table-span">
+                        <a class="import-table" href="javascript:void (0)">
+                            <i class="import-img"></i>
+                            <em>{% trans '导入' %}</em>
+                        </a>
+                        <a class="export-table" href="javascript:void (0)">
+                            <i class="print-img"></i>
+                            <em>{% trans '导出' %}</em>
+                        </a>
+                    </span>
+                </div>
+            </h2>
+            <table>
+                <tbody>
+                {% if error %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
+                {% autopaginate members 10 %}
+                {% for member in members %}
+                    <tr>
+                        <td class="basis">
+                            <p>
+                                <span class="name">{% trans '姓名：' %}{{ member.name }}</span>
+                                <span>{% trans '性别：' %}{{ member.get_sex_display }}</span>
+                            </p>
+                            <p>
+                                <span>{% trans '身份：' %}{{ member.get_identity_display }}</span>
+                                <span>{% trans '城市：' %}{{ member.city }}</span>
+                            </p>
+                            <p>
+                                <span>{% trans '行业：' %}{{ member.trade }}</span>
+                                <span>{% trans '公司：' %}{{ member.company }}</span>
+                            </p>
+                            <p>
+                                <span>{% trans '职位：' %}{{ member.job }}</span>
+                                <span>{% trans '电话：' %}{{ member.mobile_phone }}</span>
+                            </p>
+{#                            <p>#}
+{#                                {% trans '微信：' %}{{ member.wechat }}#}
+{#                            </p>#}
+                            <p>
+                                {% trans '邮箱：' %}{{ member.email|default:"" }}
+                            </p>
+                        </td>
+                        <td class="attention">
+                            {% if member.get_attention == '关注' %}
+                                <span class="yes">
+                                    <em class="yes-img"></em>
+                                    <a href='javascript:void (0)' data-url="{% url 'member_attention' %}?id={{ member.id }}" data-attention="0">{% trans '已关注' %}</a>
+                                </span>
+                            {% else %}
+                                <span class="no">
+                                    <a href='javascript:void (0)' data-url="{% url 'member_attention' %}?id={{ member.id }}" data-attention="1">{% trans '关注' %}</a>
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="status">
+                            <div>
+                                <span>{% trans '*已改为' %}<em>{{ member.get_examine }}</em></span>
+                                <select name="examine" data-id="{{ member.id }}" data-url="{% url 'member_examine' %}?id={{ member.id }}">
+                                        <option {% ifequal member.demand.examine '0' %}selected="selected"{% endifequal %} value='0'>{% trans '待审核' %}</option>
+                                        <option {% ifequal member.demand.examine '1' %}selected="selected"{% endifequal %} value='1'>{% trans '审核通过' %}</option>
+                                        <option {% ifequal member.demand.examine '2' %}selected="selected"{% endifequal %} value='2'>{% trans '已拒绝' %}</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td class="time">
+                            <p><em>{% trans '填表时间' %}</em></p>
+                            <p>{{ member.create|date:"Y-m-d H:i:s" }}</p>
+                        </td>
+                        <td class="preview">
+                            <a href="{% url 'member_details' %}?id={{ member.id }}">{% trans '查看详情' %}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+        {% paginate using "includes/pagination.html" %}
+
+    </div>
+
+    {% verbatimsmart %}
+        <script type="text/template" id="import-table-template">
+            <div id="pop">
+                <div class="pop-action">
+                    <a href="javascript:void(0)">{% trans "导入会员列表" %}</a>
+                    <span class="pop-close button b-close"></span>
+                </div>
+                <div class="pop-contents">
+                    <div class="contents">
+                        <form method="post" id="table-form-horizontal" action="{% url 'member_upload_excel' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="upload-files">
+                                <input type='text' id='textfield' class='txt' />
+                                <input type='button' class='btn' value='浏览...' />
+                                <input type="file" name="upload_xls" class="up" id="id_upload_xls" size="28" onchange="document.getElementById('textfield').value=this.value" />
+                            </div>
+                            <div id="upload-status"></div>
+                            <input type="submit" class="btn sub" value="上传" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </script>
+    {% endverbatimsmart %}
+
+
+{% endblock %}

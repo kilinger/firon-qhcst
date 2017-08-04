@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+
+{% load compress %}
+{% load staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
+
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/regist.js' %}"></script>
+{% endblock %}
+
+
+{% block page %}
+    <h2 class="section-title">
+        {% if pre %}
+            <a href="/regist/info_demand/?pre=up" class="prev">{% trans "上一步" %}</a>
+        {% endif %}
+        <span class="title">{% trans "信息预览" %}</span>
+    </h2>
+    <div class="content">
+        <div class="control-group">
+            <div class="preview">
+                <span class="preview-title">{% trans "基本信息" %}</span>
+                <a class="preview-modify" href="{% url 'edit_info_basis' %}">{% trans "修改" %}</a>
+            </div>
+            <div class="controls">
+                <p class="controls-group">
+                    <span class="controls-left">{% trans "姓名：" %}<em>{{ basis.name }}</em></span>
+                    <span class="controls-center">{% trans "性别：" %}<em>{{ basis.get_sex_display }}</em></span>
+                </p>
+                <p class="controls-group">
+                    <span class="controls-left">{% trans "身份：" %}<em>{{ basis.get_identity_display }}</em></span>
+                    <span class="controls-center">{% trans "手机：" %}<em>{{ basis.mobile_phone }}</em></span>
+                </p>
+                <p class="controls-group">
+                    <span class="controls-left">{% trans "行业：" %}<em>{{ basis.job }}</em></span>
+                    <span class="controls-center">{% trans "城市：" %}<em>{{ basis.city }}</em></span>
+                </p>
+                <p class="controls-group">
+                    <span class="controls-center">{% trans "邮箱：" %}<em>{{ basis.email|default:"" }}</em></span>
+                </p>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="preview">
+                <span class="preview-title">{% trans "教育经历" %}</span>
+                <a class="preview-modify" href="{% url 'edit_info_educate' %}">{% trans "修改" %}</a>
+            </div>
+            <div class="controls">
+                <p class="controls-group">
+                    <span class="controls-left">{% trans "学校：" %}<em>{{ educate.school }}</em></span>
+                    <span class="controls-center">{% trans "入学年月：" %}<em>{{ educate.enrol_date|date:"Y.m" }}</em></span>
+                </p>
+                <p class="controls-group">
+                    <span class="controls-left">{% trans "学位：" %}<em>{{ educate.degree }}</em></span>
+                    <span class="controls-center">{% trans "毕业年月：" %}<em>{{ educate.graduate_date|date:"Y.m"}}</em></span>
+                </p>
+                <p class="controls-group">
+                    <span class="controls-center">{% trans "系别：" %}<em>{{ educate.department }}</em></span>
+                </p>
+                {% if educate.second_graduate_date and educate.second_enrol_date and educate.second_degree and educate.second_school and educate.second_department %}
+                    <p class="controls-group">
+                        <span class="controls-left">{% trans "学校：" %}<em>{{ educate.second_school }}</em></span>
+                        <span class="controls-center">{% trans "入学年月：" %}<em>{{ educate.second_enrol_date|date:"Y.m" }}</em></span>
+                    </p>
+                    <p class="controls-group">
+                        <span class="controls-left">{% trans "学位：" %}<em>{{ educate.second_degree }}</em></span>
+                        <span class="controls-center">{% trans "毕业年月：" %}<em>{{ educate.second_graduate_date|date:"Y.m"}}</em></span>
+                    </p>
+                    <p class="controls-group">
+                        <span class="controls-center">{% trans "系别：" %}<em>{{ educate.second_department }}</em></span>
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="control-group">
+            <p class="preview">
+                <span class="preview-title">{% trans "创业信息" %}</span>
+                <a class="preview-modify" href="{% url 'edit_info_occupation' %}">{% trans "修改" %}</a>
+            </p>
+            <div class="controls">
+                <p class="controls-group">
+                    <span class="controls-center">{% trans "创业状态：" %}<em>{{ occupation.get_occupation_state_display }}</em></span>
+                </p>
+{#                <p class="controls-group">#}
+{#                    <span class="controls-center">{% trans "是否对其他俱乐部校友可见：" %}<em>{{ occupation.get_public_display }}</em></span>#}
+{#                </p>#}
+                <p class="controls-group">
+                    <span class="controls-center">{% trans "项目简介：" %}<em>{{ occupation.item_brief }}</em></span>
+                </p>
+                <p class="controls-group">
+                    <span class="controls-center">{% trans "备注：" %}<em>{{ occupation.remarks }}</em></span>
+                </p>
+            </div>
+        </div>
+        <div class="control-group">
+            <p class="preview">
+                <span class="preview-title">{% trans "供求信息" %}</span>
+                <a class="preview-modify" href="{% url 'edit_info_demand' %}">{% trans "修改" %}</a>
+            </p>
+            <div class="controls">
+                <p class="controls-group">
+                    <span class="controls-center">{% trans "需求：" %}<em>{{ demand.demand }}</em></span>
+                </p>
+                <p class="controls-group">
+                    <span class="controls-center">{% trans "提供：" %}<em>{{ demand.supply }}</em></span>
+                </p>
+            </div>
+        </div>
+        <div class="controls actions">
+            <div class="form-actions">
+                <label class="actions-label" for="switch">{% trans "是否接受信息推送？" %}</label>
+                <div onclick="" class="slider">
+                    <span class="slider-btn"></span>
+                </div>
+            </div>
+            <a href="/regist/finish/" class="button">{% trans '确认提交' %}</a>
+        </div>
+    </div>
+{% endblock %}

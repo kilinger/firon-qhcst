@@ -1,0 +1,23 @@
+-r dev.txt
+
+# Testing
+nose
+mock
+django-nose
+-e git+https://code.xxxxx.com/mirrors/test-utils.git#egg=test-utils
+django-coverage
+coverage
+pep8
+pylint
+
+factory_boy
+
+django-discover-runner==1.0
+
+selenium==2.42.1
+splinter==0.6.0
+dj-inmemorystorage==1.0.3
+
+# django web driver for splinter
+lxml==3.3.2
+cssselect==0.9.1

@@ -1,0 +1,21 @@
+{% load i18n %}
+{% load staticfiles %}
+{% load url from future %}
+
+
+<div class="header">
+    <div class="inner">
+        <div class="logo">
+            <a href="{% url 'member_list' %}">
+                <img src="{% static 'img/header_logo.png' %}" alt="{{ SITE_TITLE }}" />
+            </a>
+        </div>
+        <div class="title">
+            <span>{% trans "清华校友创业互助俱乐部会员管理系统" %}</span>
+        </div>
+        <div class="functions">
+            <a href="{% url 'auth_reset_password' %}" class="change-password">{% trans '修改密码' %}</a>
+            <a class="logout" href="{% url 'auth_logout' %}">{% trans '退出' %}</a>
+        </div>
+    </div>
+</div>

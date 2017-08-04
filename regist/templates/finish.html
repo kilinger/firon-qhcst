@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load compress %}
+{% load staticfiles %}
+{% load i18n %}
+
+
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/regist.js' %}"></script>
+{% endblock %}
+
+
+{% block htmlStyle %}
+    id="index-page"
+{% endblock %}
+
+
+{% block page %}
+
+    <div class="bg">
+        <p>
+            <img class="logo" src="{% static 'img/reg_logo.png' %}" alt="" />
+        </p>
+        <p>
+            <img class="hint" src="{% static 'img/title.png' %}" alt="" />
+        </p>
+
+        <p class="end-content-top">{% trans "非常感谢您的报名，" %}</p>
+        <p class="end-content-bottom">{% trans "我们会尽快与您取得联系！" %}</p>
+
+        <div class="bottom-bg">
+            <img class="bottom-img" src="{% static 'img/bottom.png' %}" alt=""/>
+        </div>
+    </div>
+{% endblock %}

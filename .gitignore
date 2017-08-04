@@ -1,0 +1,25 @@
+syntax: glob
+*.pyc
+*~
+*.swp
+*.bak
+*.orig
+*.pid
+*.log
+.svn
+.git
+*.egg-info
+*.sublime-project
+*.sublime-workspace
+.webassets*
+*/static/assets/
+site-static/
+
+var/
+dist/
+.tox/
+.DS_Store
+ip_name.py
+doodoll.db
+.idea/
+

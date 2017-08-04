@@ -1,0 +1,200 @@
+@import "compass/reset";
+@import "compass/css3/inline-block";
+@import "compass/css3/border-radius";
+@import "compass/utilities/general";
+@import "compass/css3/opacity";
+
+* {
+    padding: 0;
+    margin: 0;
+}
+html {
+    height: 100% !important;
+    min-height: 100%;
+    line-height: 1.231;
+    color: #928baa;
+    font-family: \534E\6587\7EC6\9ED1;
+    font-size: 12px;
+    word-break: normal;
+    word-wrap: break-word;
+    max-width: 740px;
+    margin: 0 auto;
+    background-color: #FFFFFF;
+}
+
+
+body {
+    max-width: 740px;
+    min-height: 100%;
+	margin: 0 auto;
+    background: {
+        size: cover;
+        repeat: repeat-y;
+        position: center top;
+        color: #ececf6;
+    }
+    padding-bottom: 40px;
+}
+
+a {
+    text-decoration: none;
+}
+
+#page {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.section-title {
+    @include clearfix();
+    height: 40px;
+    line-height: 40px;
+    background-color: #9044d9;
+
+    .title {
+        font-size: 15px;
+        color: #fff;
+        display: block;
+        text-align: center;
+        font-weight: bold;
+        margin: {
+            right: 5em;
+            left: 5em;
+        }
+    }
+    .search {
+        @include float-right();
+        background: url("../img/search.png") no-repeat scroll 0 0;
+        background-size: 50%;
+        height: 30px;
+        width: 30px;
+        margin: 10px -5px 0 0;
+    }
+    .search-form {
+        padding: 10px 20px 10px 10px;
+        .search-input {
+            height: 20px;
+            background-color: #FFFFFF;
+            @include border-radius(3px);
+        }
+        .search-gray {
+            @include float-left();
+            background: url("../img/search_gray.png") no-repeat scroll 0 0;
+            background-size: 50%;
+            height: 30px;
+            width: 30px;
+            margin: 2px 6px;
+        }
+        input[type="text"] {
+            @include float-left();
+            font-size: 12px;
+            line-height: 20px;
+            color: #333;
+            background-color: transparent;
+            border: medium none;
+            outline: none;
+            width: 80%;
+            margin-left: -15px;
+        }
+    }
+}
+
+.content {
+    margin: 0 10px;
+
+    .head-portrait {
+        @include float-left();
+        height: 64px;
+        width: 64px;
+        .img-dd {
+            img {
+                @include border-radius(5px);
+                width: 64px;
+                height: 64px;
+            }
+        }
+        .name-dd {
+            width: 64px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    }
+
+    .control-group {
+        height: 90px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+
+        .inline-group {
+            margin-left: 78px;
+            .introduction {
+                height: 64px;
+                background-color: #FFFFFF;
+                @include border-radius(5px);
+                padding: 0 10px;
+                span {
+                    @include inline-block();
+                    width: 45%;
+                    font-size: 12px;
+                    line-height: 28px;
+                }
+            }
+            .actions {
+                background-color: #938fa6;
+                text-align: center;
+                @include border-radius(3px);
+                margin-top: 5px;
+                height: 16px;
+                a {
+                    line-height: 16px;
+                    font-size: 12px;
+                    color: #FFFFFF;
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .controls-group {
+        margin-top: 10px;
+        .basis-title {
+            display: block;
+            padding-bottom: 5px;
+            padding-left: 8px;
+        }
+        .basis {
+            margin-left: 90px;
+            height: 62px;
+            border-top: 1px solid #c9c9c9;
+            border-bottom: 1px solid #c9c9c9;
+            span {
+                @include inline-block();
+                width: 45%;
+            }
+        }
+        .phone-email {
+            border-bottom: 1px solid #c9c9c9;
+            padding: 10px 8px;
+            p {
+                line-height: 20px;
+            }
+        }
+        .educate {
+            background-color: #fff;
+            border: 1px solid #c9c9c9;
+            @include border-radius(3px);
+            padding: 15px 8px;
+            p {
+                line-height: 28px;
+            }
+            span {
+                @include inline-block();
+                width: 45%;
+            }
+        }
+        span {
+            line-height: 20px;
+        }
+    }
+}

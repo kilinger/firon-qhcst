@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+
+{% load compress %}
+{% load staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/regist.js' %}"></script>
+{% endblock %}
+
+
+{% block page %}
+    <h2 class="section-title">
+        {% if pre %}
+            <a href="/regist/info_occupation/?pre=up" class="prev">{% trans "上一步" %}</a>
+        {% endif %}
+        <label for="id_submit" class="next">{% trans "下一步" %}</label>
+        <span class="title">{% trans "供求信息" %}<em>{% trans "4/4" %}</em></span>
+    </h2>
+
+    <form class="form-horizontal occupation" method="post" action=".">
+
+        <div class="hidden">
+            <input type="submit" id="id_submit"/>
+        </div>
+
+        {% csrf_token %}
+        <div class="text-group state">
+            <div class="control-group">
+                <label class="control-label remarks-label">{% trans "您希望得到哪些资源？" %}</label>
+            </div>
+            <div class="control-group remarks">
+                {% if form.demand.errors %}
+                    {% for error in form.demand.errors %}
+                        <textarea class="error" name="demand" id="" cols="30" rows="10" placeholder="{{ error }}"></textarea>
+                    {% endfor %}
+                {% else %}
+                    {% if form %}
+                        {{ form.demand }}
+                    {% else %}
+                        <textarea name="demand" id="" cols="30" rows="10" placeholder="{% trans '需求信息，例如：以认识朋友为主' %}"></textarea>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-group state">
+            <div class="control-group">
+                <label class="control-label remarks-label">{% trans "您能够提供哪些资源？" %}</label>
+            </div>
+            <div class="control-group remarks">
+                {% if form.supply.errors %}
+                    {% for error in form.supply.errors %}
+                        <textarea class="error" name="supply" id="" cols="30" rows="10" placeholder="{{ error }}"></textarea>
+                    {% endfor %}
+                {% else %}
+                    {% if form %}
+                        {{ form.supply }}
+                    {% else %}
+                        <textarea name="supply" id="" cols="30" rows="10" placeholder="{% trans '提供信息，例如云计算领域技术合作' %}"></textarea>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </form>
+{% endblock %}

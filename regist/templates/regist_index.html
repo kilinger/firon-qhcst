@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+
+{% load compress %}
+{% load staticfiles %}
+{% load doodoll_kit_tags %}
+
+
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block htmlStyle %}
+    id="index-page"
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/regist.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var seconds = 2,
+                time = 0;
+            time = setInterval(function() {
+                $(".time-out .time").html(seconds);
+                if (seconds == 0) {
+                    clearInterval(time);
+                    window.location = '/regist/info_basis/';
+                }
+                seconds --;
+            }, 1000);
+        })
+    </script>
+{% endblock %}
+
+
+{% block page %}
+    <div class="bg">
+        <p>
+            <img class="logo" src="{% static 'img/reg_logo.png' %}" alt="" />
+        </p>
+        <p>
+            <img class="hint" src="{% static 'img/title.png' %}" alt="" />
+        </p>
+
+        <p class="time-out"><em class="time">3</em>s</p>
+
+        <div class="bottom-bg">
+            <img class="bottom-img" src="{% static 'img/bottom.png' %}" alt=""/>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+{% load compress %}
+{% load staticfiles %}
+{% load i18n %}
+
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'css/message.scss' %}" type="text/x-scss"/>
+    {% endcompress %}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function () {
+            $("body").on( "click", ".search", function () {
+                $(this).css("display","none");
+                $(".title").css("display","none");
+                $(".search-form").css("display","block");
+            })
+        })
+        window.onbeforeunload = function() {
+            url = window.location.href;
+            $.get(url,{'close_message':'delete'})
+        }
+
+    </script>
+{% endblock %}
+
+
+{% block page %}
+    <h1 class="section-title">
+        <div onclick="" class="search"></div>
+        <span class="title">{% trans "校友列表" %}</span>
+        <div class="search-form">
+            <form action="" method="get">
+                {% csrf_token %}
+                <div class="search-input">
+                    <label for="" class="search-gray"></label>
+                    <input type="text" name="sort" placeholder="搜索姓名，身份，行业，系别，入学年份"/>
+                </div>
+            </form>
+        </div>
+    </h1>
+    <div class="content">
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        {% for member in members %}
+        <div class="control-group">
+            <div class="head-portrait">
+                <dd class="img-dd"><img src="{% if member.image %}{{ member.image }}{% else %}{% static 'img/cstx.png' %}{% endif %}" alt=""/></dd>
+                <dd class="name-dd">{{ member.name }}</dd>
+            </div>
+            <div class="inline-group">
+                <div class="introduction">
+                    <p>
+                        <span>{{ member.educate.department }}{% trans '系' %}</span>
+                        <span>{{ member.educate.enrol_date|date:"Y.m" }}{% trans '入学' %}</span>
+                    </p>
+                    <p>
+                        <span>{{ member.trade }}{% trans '行业' %}</span>
+                        <span>{{ member.get_identity_display }}</span>
+                    </p>
+                </div>
+                <div class="actions">
+                    <a href="{% url 'message_details' %}?id={{ member.id }}">{% trans "详情" %}</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

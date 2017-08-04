@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+{% load compress %}
+{% load staticfiles %}
+{% load i18n %}
+
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'css/message.scss' %}" type="text/x-scss"/>
+    {% endcompress %}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function () {
+            $("body").on( "click", ".search", function () {
+                $(this).css("display","none");
+                $(".title").css("display","none");
+                $(".search-form").css("display","block");
+            })
+        })
+    </script>
+{% endblock %}
+
+
+{% block page %}
+    <h1 class="section-title">
+        <span class="title">{% trans "会员详情" %}</span>
+    </h1>
+    <div class="content">
+
+        <div class="controls-group">
+            <div class="head-portrait">
+                <dd class="img-dd"><img src="{% if member.image %}{{ member.image }}{% else %}{% static 'img/cstx.png' %}{% endif %}" alt=""/></dd>
+            </div>
+            <div class="basis">
+                <p>
+                    <span>{% trans "姓名：" %}{{ member.name }}</span>
+                    <span>{% trans "性别：" %}{{ member.get_sex_display }}</span>
+                </p>
+                <p>
+                    <span>{% trans "身份：" %}{{ member.get_identity_display }}</span>
+                    <span>{% trans "城市：" %}{{ member.city }}</span>
+                </p>
+                <p>
+                    <span>{% trans "行业：" %}{{ member.trade }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="controls-group">
+            <span class="basis-title">{% trans "教育背景" %}</span>
+            <div class="educate">
+                <p>
+                    <span>{% trans "学校：" %}{{ educate.school }}</span>
+                    <span>{% trans "入学年月：" %}{{ educate.enrol_date|date:"Y.m" }}</span>
+                </p>
+                <p>
+                    <span>{% trans "学位：" %}{{ educate.degree }}</span>
+                    <span>{% trans "毕业年月：" %}{{ educate.graduate_date|date:"Y.m" }}</span>
+                </p>
+                <p>{% trans "系别：" %}{{ educate.department }}</p>
+                {% if educate.second_graduate_date and educate.second_enrol_date and educate.second_degree and educate.second_school and educate.second_department %}
+                    <p>
+                        <span>{% trans "学校：" %}{{ educate.second_school }}</span>
+                        <span>{% trans "入学年月：" %}{{ educate.second_enrol_date|date:"Y.m" }}</span>
+                    </p>
+                    <p>
+                        <span>{% trans "学位：" %}{{ educate.second_degree }}</span>
+                        <span>{% trans "毕业年月：" %}{{ educate.second_graduate_date|date:"Y.m" }}</span>
+                    </p>
+                    <p>{% trans "系别：" %}{{ educate.second_department }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="controls-group">
+            <span class="basis-title">{% trans "创业信息" %}</span>
+            <div class="educate">
+                <p>{% trans "创业状态：" %}{{ member.get_occupation_state }}</p>
+                <p>{% trans "项目简介：" %}{{ occupation.item_brief }}</p>
+                <p>{% trans "备注：" %}{{ occupation.remarks }}</p>
+            </div>
+        </div>
+
+        <div class="controls-group">
+            <span class="basis-title">{% trans "供求信息" %}</span>
+            <div class="educate">
+                <p>{% trans "需求：" %}{{ demand.demand }}</p>
+                <p>{% trans "提供：" %}{{ demand.supply }}</p>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

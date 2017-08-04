@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+
+{% load compress %}
+{% load staticfiles %}
+{% load i18n %}
+
+
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/regist.js' %}"></script>
+{% endblock %}
+
+
+{% block page %}
+    <h1 class="section-title">
+        <label for="id_submit" class="next">{% trans "下一步" %}</label>
+        <span class="title">{% trans "基本信息" %}<em>1/4</em></span>
+    </h1>
+
+    <form id="form" class="form-horizontal" method="post" action=".">
+
+        <div class="hidden">
+            <input type="submit" id="id_submit"/>
+        </div>
+        
+        {% csrf_token %}
+        <div class="text-group">
+            <div class="control-group">
+                <label class="control-label">{% trans "姓名" %}</label>
+                <div class="controls">
+                    {% if form.name.errors %}
+                        {% for error in form.name.errors %}
+                            <input class="error" type="text" name="name" placeholder="{{ error }}" />
+                        {% endfor %}
+                    {% else %}
+                        {% if form %}
+                            {{ form.name }}
+                        {% else %}
+                            <input type="text" name="name" placeholder="{% trans '必填' %}" />
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="check-group">
+            <div class="control-group">
+                <label class="control-label">{% trans "性别" %}</label>
+                <div class="controls">
+                    {% for sex in form.sex %}
+                         <span class="radio-box sex">
+                            {{ sex }}
+                         </span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">{% trans "身份" %}</label>
+                <div class="controls">
+                    {% for identity in form.identity %}
+                        <span class="radio-box identity">
+                            {{ identity }}
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="text-group">
+            <div class="control-group">
+                <label class="control-label"><em class="title">{% trans "公司" %}</em></label>
+                <div class="controls">
+                    {% if form.company.errors %}
+                        {% for error in form.company.errors %}
+                            <input class="error" type="text" name="company" placeholder="{{ error }}" />
+                        {% endfor %}
+                    {% else %}
+                        {% if form %}
+                            {{ form.company }}
+                        {% else %}
+                            <input type="text" name="company" placeholder="{% trans '必填' %}" />
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><em class="title">{% trans "职位" %}</em></label>
+                <div class="controls">
+                    {% if form.job.errors %}
+                        {% for error in form.job.errors %}
+                            <input class="error" type="text" name="job" placeholder="{{ error }}" />
+                        {% endfor %}
+                    {% else %}
+                        {% if form %}
+                            {{ form.job }}
+                        {% else %}
+                            <input type="text" name="job" placeholder="{% trans '必填' %}" />
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><em class="title">{% trans "邮箱" %}</em></label>
+                <div class="controls">
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
+                            <input class="error" type="text" name="email" placeholder="{{ error }}" />
+                        {% endfor %}
+                    {% else %}
+                        {% if form %}
+                            {{ form.email }}
+                        {% else %}
+                            <input type="text" name="email" placeholder="{% trans '必填' %}" />
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">{% trans "手机" %}</label>
+                <div class="controls">
+                    {% if form.mobile_phone.errors %}
+                        {% for error in form.mobile_phone.errors %}
+                            <input class="error" type="text" name="mobile_phone" placeholder="{{ error }}" />
+                        {% endfor %}
+                    {% else %}
+                       {% if form %}
+                            {{ form.mobile_phone }}
+                        {% else %}
+                            <input type="text" name="mobile_phone" placeholder="{% trans '必填' %}" />
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="text-group">
+            <div class="control-group">
+                <label class="control-label"><em class="title">{% trans "行业" %}</em></label>
+                <div class="controls">
+                    {% if form.trade.errors %}
+                        {% for error in form.trade.errors %}
+                            <input class="error" type="text" name="trade" placeholder="{{ error }}" />
+                        {% endfor %}
+                    {% else %}
+                        {% if form %}
+                            {{ form.trade }}
+                        {% else %}
+                            <input type="text" name="trade" placeholder="{% trans '必填' %}" />
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><em class="title">{% trans "城市" %}</em></label>
+                <div class="controls">
+                    {% if form.city.errors %}
+                        {% for error in form.city.errors %}
+                            <input class="error" type="text" name="city" placeholder="{{ error }}" />
+                        {% endfor %}
+                    {% else %}
+                        {% if form %}
+                            {{ form.city }}
+                        {% else %}
+                            <input type="text" name="city" placeholder="{% trans '必填' %}" />
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% if headurl %}
+            {% else %}
+                {% if openid %}
+                    <div class="control-group">
+                        <label class="control-label">{% trans "微信" %}</label>
+                        <div class="controls">
+                            <a href="javascript:void(0)" onclick="" class="information">{% trans "获取信息" %}</a>
+    {#                        {% if form.wechat.errors %}#}
+    {#                            {% for error in form.wechat.errors %}#}
+    {#                                <input class="error" type="text" name="wechat" placeholder="{{ error }}" />#}
+    {#                            {% endfor %}#}
+    {#                        {% else %}#}
+    {#                                <a href="{{ url }}" onclick="" class="information">{% trans "获取信息" %}</a>#}
+    {#                            {% else %}#}
+    {#                                {{ form.wechat }}#}
+    {#                        {% endif %}#}
+                        </div>
+                    </div>
+                {% else %}
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <p class="sex-identity-error">
+            {% if form.sex.errors %}
+                {% trans "性别为必选项" %}
+                {% if form.identity.errors %}
+                    {% trans "且身份为必选项" %}
+                {% endif %}
+            {% else %}
+                {% if form.identity.errors %}
+                    {% trans "身份为必选项" %}
+                {% endif %}
+            {% endif %}
+        </p>
+    </form>
+{% endblock %}

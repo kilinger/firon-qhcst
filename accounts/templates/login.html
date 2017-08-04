@@ -1,0 +1,63 @@
+{% extends "member_base.html" %}
+
+
+{% load compress %}
+{% load staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+
+{% block title %} {% trans '登陆页' %} - {{ SITE_TITLE }} {% endblock %}
+
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'css/index.scss' %}" type="text/x-scss"/>
+    {% endcompress %}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+{#    <script type="text/javascript" src="{% static 'js/change_pwd.js' %}"></script>#}
+{% endblock %}
+
+
+{% block header %}
+    <div class="login">
+        <img src="{% static 'img/logo.png' %}" alt=""/>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="auth-form">
+        <form action="{% url 'auth_login' %}" method="post" accept-charset="utf-8" class="form-horizontal">
+            {% csrf_token %}
+
+            <div class="control">
+                <div id="div_id_username" class="input-box">
+                    <label for="" class="control-label username">{% trans "账号" %}</label>
+                    <div class="controls">
+                        {{ form.username }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="control">
+                <div id="div_id_password" class="input-box">
+                    <label for="" class="control-label password">{% trans "密码" %}</label>
+                    <div class="controls">
+                        {{ form.password }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="control">
+                <input class="btn btn-primary" type="submit" value="{% trans '登录' %}" />
+            </div>
+{#            <span class="forget"><a class="forget-pwd" href="">{% trans '忘记密码？' %}</a></span>#}
+        </form>
+    </div>
+{% endblock %}

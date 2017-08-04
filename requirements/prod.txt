@@ -1,0 +1,54 @@
+# Install everything that needs to be compiled
+-r compiled.txt
+
+# Django stuff
+Django>=1.4,<1.5
+
+# Templates
+Markdown
+
+# Logging
+raven
+
+# Celery: Message queue
+#celery
+#django-celery
+
+# L10n/i18n
+#Babel
+#-e git://github.com/clouserw/tower.git#egg=tower
+
+# Caching
+python-memcached
+
+# Configurations
+django-environ
+
+# Database backup
+django-dbbackup
+
+django-filter==0.7
+
+# Extensions
+django-extensions
+
+# Forms
+django-crispy-forms
+django-parsley
+django-simple-captcha
+
+# Migrations
+South
+
+# Sass/Compass
+django-compressor
+compressor-compass
+
+doodoll-kit
+
+#Excel
+xlwt==0.7.5
+xlrd==0.9.3
+
+
+linaro-django-pagination==2.0.2

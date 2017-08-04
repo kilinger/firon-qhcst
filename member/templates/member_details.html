@@ -1,0 +1,150 @@
+{% extends "member_base.html" %}
+
+{% load url from future %}
+{% load compress %}
+{% load staticfiles %}
+{% load i18n %}
+
+
+{% block title %} {% trans '查看详情' %} - {{ SITE_TITLE }} {% endblock %}
+
+
+{% block css %}
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'css/index.scss' %}" type="text/x-scss"/>
+    {% endcompress %}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/get_url.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div id="bread-crumb">
+        <span><a href="{% url 'member_list' %}">{% trans '首页' %}</a></span>
+        <span>&gt;</span>
+        <span><a href="{% url 'member_list' %}?pre=up">{% trans '搜索结果页' %}</a></span>
+        <span>&gt;</span>
+        <span>{{ member.name }}{% trans '的详情' %}</span>
+    </div>
+    <div class="search-table">
+
+        <h2 class="ul-title">
+            <span class="left-title">{% trans '基本信息' %}</span>
+        </h2>
+        <table>
+            <tbody>
+                <td class="basis basis-details">
+                    <p>
+                        <span class="name">{% trans '姓名：' %}{{ member.name }}</span>
+                        <span>{% trans '性别：' %}{{ member.get_sex_display }}</span>
+                    </p>
+                    <p>
+                        <span>{% trans '身份：' %}{{ member.get_identity_display }}</span>
+                        <span>{% trans '城市：' %}{{ member.city }}</span>
+                    </p>
+                    <p>
+                        <span>{% trans '行业：' %}{{ member.trade }}</span>
+                        <span>{% trans '公司：' %}{{ member.company }}</span>
+                    </p>
+                    <p>
+                        <span>{% trans '职位：' %}{{ member.job }}</span>
+                        <span>{% trans '电话：' %}{{ member.mobile_phone }}</span>
+                    </p>
+                    <p>
+                        {% trans '微信：' %}{{ member.wechat }}
+                    </p>
+                    <p>
+                        {% trans '邮箱：' %}{{ member.email|default:"" }}
+                    </p>
+                </td>
+                <td class="attention attention-details">
+                    {% if member.get_attention == '关注' %}
+                        <span class="yes">
+                            <em class="yes-img"></em>
+                            <a href='javascript:void (0)' data-url="{% url 'member_attention' %}?id={{ member.id }}" data-attention="0">{% trans '已关注' %}</a>
+                        </span>
+                    {% else %}
+                        <span class="no">
+                            <a href='javascript:void (0)' data-url="{% url 'member_attention' %}?id={{ member.id }}" data-attention="1">{% trans '关注' %}</a>
+                        </span>
+                    {% endif %}
+                </td>
+                <td class="status">
+                    <div>
+                        <span>{% trans '*已改为' %}<em>{{ member.get_examine }}</em></span>
+                        <select name="examine" data-id="{{ member.id }}" data-url="{% url 'member_examine' %}?id={{ member.id }}">
+                            <option {% ifequal member.demand.examine '0' %}selected="selected"{% endifequal %} value='0'>{% trans '待审核' %}</option>
+                            <option {% ifequal member.demand.examine '1' %}selected="selected"{% endifequal %} value='1'>{% trans '审核通过' %}</option>
+                            <option {% ifequal member.demand.examine '2' %}selected="selected"{% endifequal %} value='2'>{% trans '已拒绝' %}</option>
+                        </select>
+                    </div>
+                </td>
+                <td class="time time-details">
+                    <p><em>{% trans '填表时间' %}</em></p>
+                    <p>{{ member.create|date:"Y-m-d H:i:s" }}</p>
+                </td>
+                <td class="time actions">
+                    <a href="{% url 'member_details' %}?pre=del&id={{ member.id }}">{% trans "删除" %}</a>
+                </td>
+            </tbody>
+        </table>
+
+        <h2 class="ul-title">
+            <span class="left-title">{% trans '教育经历' %}</span>
+        </h2>
+        <div class="demand">
+            <p>
+                <span>{% trans '学校：' %}{{ educate.school }}</span>
+                <span>{% trans '学位：' %}{{ educate.degree }}</span>
+                <span>{% trans '入学年份：' %}{{ educate.enrol_date|date:"Y.m" }}</span>
+            </p>
+            <p>
+                <span>{% trans '系别：' %}{{ educate.department }}</span>
+                <span>{% trans '毕业年份：' %}{{ educate.graduate_date|date:"Y.m" }}</span>
+            </p>
+            {% if educate.second_graduate_date and educate.second_enrol_date and educate.second_degree and educate.second_school and educate.second_department %}
+                 <p>
+                    <span>{% trans '学校：' %}{{ educate.second_school }}</span>
+                    <span>{% trans '学位：' %}{{ educate.second_degree }}</span>
+                    <span>{% trans '入学年份：' %}{{ educate.second_enrol_date|date:"Y.m" }}</span>
+                </p>
+                <p>
+                    <span>{% trans '系别：' %}{{ educate.second_department }}</span>
+                    <span>{% trans '毕业年份：' %}{{ educate.second_graduate_date|date:"Y.m" }}</span>
+                </p>
+            {% endif %}
+        </div>
+
+        <h2 class="ul-title">
+            <span class="left-title">{% trans '创业信息' %}</span>
+        </h2>
+        <div class="educate">
+            <p>
+                <span>{% trans '创业状态:' %}{{ member.get_occupation_state }}</span>
+{#                <span>{% trans '是否对其他俱乐部校友可见:' %}{{ member.get_public }}</span>#}
+            </p>
+            <p>
+                {% trans '项目简介:' %}{{ member.occupation.item_brief }}
+            </p>
+            <p>
+                {% trans '备注信息：' %}{{ member.occupation.remarks }}
+            </p>
+        </div>
+
+        <h2 class="ul-title">
+            <span class="left-title">{% trans '供求信息' %}</span>
+        </h2>
+        <div class="occupation">
+            <p>
+                {% trans '需求：' %}{{ member.demand.demand }}
+            </p>
+            <p>
+                {% trans '提供：' %}{{ member.demand.supply }}
+            </p>
+        </div>
+    </div>
+{% endblock %}

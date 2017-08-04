@@ -1,0 +1,37 @@
+{% load i18n %}
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>{% block title %}{{ SITE_TITLE }}{% endblock %}</title>
+	{% block css %}{% endblock %}
+	{% block js %}
+        <script type="text/javascript" src="{% static 'js/vendor/jquery-1.8.2.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/csrf.js' %}"></script>
+	{% endblock %}
+</head>
+<body>
+	{% get_current_language as LANGUAGE_CODE %}
+	<div id="page" class="{% block page_class %}page {{ LANGUAGE_CODE }}{% endblock %}">
+	{% block page %}
+		<div id="header">
+			{% block header %}{% include "includes/header.html" %}{% endblock %}
+		</div>
+		<div id="content">
+			{% block content %}
+			<div id="main">
+				{% block main %}{% endblock %}
+			</div>
+			{% endblock %}
+		</div>
+        <span id="for-sticky-footer"></span>
+		<div id="footer">
+			{% block footer %}{% include "includes/footer.html" %}{% endblock %}
+		</div>
+	{% endblock %}
+	</div>
+	{% include "includes/footer_scripts.html" %}
+</body>
+</html>

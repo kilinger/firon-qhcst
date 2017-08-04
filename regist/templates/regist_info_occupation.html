@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+
+{% load compress %}
+{% load staticfiles %}
+{% load i18n %}
+{% load url from future %}
+
+
+{% block css %}
+    {{ block.super }}
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/regist.js' %}"></script>
+{% endblock %}
+
+
+{% block page %}
+    <h1 class="section-title">
+        {% if pre %}
+            <a href="/regist/info_educate/?pre=up" class="prev">{% trans "上一步" %}</a>
+        {% endif %}
+        <label for="id_submit" class="next">{% trans "下一步" %}</label>
+        <span class="title">{% trans "创业信息" %}<em>3/4</em></span>
+    </h1>
+
+    <form class="form-horizontal occupation" method="post" action=".">
+
+        <div class="hidden">
+            <input type="submit" id="id_submit"/>
+        </div>
+
+        {% csrf_token %}
+        <div class="text-group">
+            <div class="control-group">
+                <label class="control-label"><em class="text-title">{% trans "创业状态" %}</em></label>
+                <div class="controls">
+                    {{ form.occupation_state }}
+                </div>
+            </div>
+        </div>
+{#        <div class="check-group">#}
+{#            <div class="control-group">#}
+{#                <label class="control-label"><em class="text-title">{% trans "是否对其他俱乐部校友可见" %}</em></label>#}
+{#                <div class="controls">#}
+{#                    {% for public in form.public %}#}
+{#                        <span class="radio-box sex">#}
+{#                            {{ public.tag }}#}
+{#                            <label for="{{ public.id_for_label }}">{{ public.choice_label }}</label>#}
+{#                        </span>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+        <div class="text-group state">
+            <div class="control-group">
+                <label class="control-label">{% trans "项目简介" %}</label>
+            </div>
+            <div class="control-group remarks">
+                {% if form.item_brief.errors %}
+                    {% for error in form.item_brief.errors %}
+                        <textarea class="error" name="item_brief" id="" cols="30" rows="10" placeholder="{{ error }}"></textarea>
+                    {% endfor %}
+                {% else %}
+{#                    {% if form %}#}
+{#                        {{ form.item_brief }}#}
+{#                    {% else %}#}
+                        <textarea name="item_brief" id="" cols="30" rows="10" placeholder="{% trans '大体概述' %}" oncopy="return false;" onpaste="return false;" oncut="return false;"></textarea>
+{#                    {% endif %}#}
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-group state">
+            <div class="control-group">
+                <label class="control-label">{% trans "备注信息" %}</label>
+            </div>
+            <div class="control-group remarks">
+                {% if form.remarks.errors %}
+                    {% for error in form.remarks.errors %}
+                        <textarea class="error" name="remarks" id="" cols="30" rows="10" placeholder="{{ error }}"></textarea>
+                    {% endfor %}
+                {% else %}
+                    {% if form %}
+                        {{ form.remarks }}
+                    {% else %}
+                        <textarea name="remarks" id="" cols="30" rows="10" placeholder="{% trans '备注' %}"></textarea>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% load i18n %}
+
+{% if is_paginated %}
+    <div class="pagination">
+{#        <div class="goto" id="goto">#}
+{#            <input type="text" value="" class="num"/>#}
+{#            <a href="">{% trans '跳页 ' %}</a>#}
+{#        </div>#}
+
+        <script>
+            "use strict";
+
+            var _oGo = $('#goto'),
+                _inpNum = _oGo.find('input'),
+                _btnConfirm = _oGo.find('a');
+
+            $(".num").on("keyup", function() {
+
+                var pageNum = $(this).val(),
+                    maxNum = parseFloat($(".page-show .page").eq(-1).text()),
+                    reg = /^\d*$/;
+
+                if(!reg.test(pageNum)) {
+                    $(this).val("");
+                } else {
+                    pageNum = parseFloat(pageNum);
+
+                    if (pageNum > maxNum){
+                        $(this).val(maxNum);
+                    }
+                    if(pageNum <= 0){
+                        $(this).val("1");
+                    }
+                }
+            });
+
+            _btnConfirm.on("click", function() {
+
+                var pageNum = $.trim(_inpNum.val());
+
+                if(pageNum == "") {
+                    return false;
+                } else {
+                    _btnConfirm[0].href = "?page=" + pageNum + "{{ getvars }}";
+                }
+            });
+        </script>
+
+        <div class="page-show">
+
+            {% block previouslink %}
+                {% if page_obj.has_previous %}
+                    <a href="?page{{ page_suffix }}={{ page_obj.previous_page_number }}{{ getvars }}" class="prev">{{ previous_link_decorator|safe }}上一页</a>
+                {% else %}
+                    {% if display_disabled_previous_link %}
+                        <span class="disabled prev">{{ previous_link_decorator|safe }}previous</span>
+                    {% endif %}
+                {% endif %}
+            {% endblock previouslink %}
+
+            {% block pagelinks %}
+                {% if display_page_links %}
+                    {% for page in pages %}
+                        {% if page %}
+                            {% ifequal page page_obj.number %}
+                                <span class="current page">{{ page }}</span>
+                            {% else %}
+                                <a href="?page{{ page_suffix }}={{ page }}{{ getvars }}" class="page">{{ page }}</a>
+                            {% endifequal %}
+                        {% else %}
+                            ...
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endblock pagelinks %}
+
+            {% block nextlink %}
+                {% if page_obj.has_next %}
+                    <a href="?page{{ page_suffix }}={{ page_obj.next_page_number }}{{ getvars }}" class="next">{% trans '下一页' %}{{ next_link_decorator|safe }}</a>
+                </div>
+
+                {% else %}
+                    {% if display_disabled_next_link %}
+                        <span class="disabled next">next{{ next_link_decorator|safe }}</span>
+                    {% endif %}
+                {% endif %}
+            {% endblock nextlink %}
+        </div>
+    </div>
+{% endif %}
